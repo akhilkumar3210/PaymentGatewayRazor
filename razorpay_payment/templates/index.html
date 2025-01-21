@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div>
+        <form action="{% url 'payment' %}" method="post">
+            {%  csrf_token %}
+            <div>
+                <label for="exampleinput">Name</label>
+                <input type="text" name="name" id="exampleinputemail">
+            </div>
+            <div>
+                <label for="exampleinputpassword">Amount</label>
+                <input type="number" name="amount" id="exampleinputpassword">
+            </div>
+            <div>
+                <button type="submit">PayNow</button>
+            </div>
+        </form>
+    </div>
+
+
+    <form action="" method="post">
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            var options ={
+                key: "{{razorpay_key}}",
+                amount:"{{order.amount}}",
+                currency: "INR",
+                name: "{{order.name}}",
+                descriptions : "Test Transaction",
+                image: "https://example.com/your_logo",
+                order_id: "{{order.provider_order_id}}",
+                callback_url:"{{callback_url}}",
+                redirect: true,
+                prefill: {
+                    "name":"ajay",
+                    "email":"ajay@gmail.com",
+                    "contact":"9845631210"
+                },
+                notes:{
+                    "address":"Razorpay Corporate Office"
+                },
+                theme:{
+                    "color":"#3399cc"
+                },
+            };
+            var rzp1=new Razorpay(options);
+            rzp1.open();
+        </script>
+        <input type="hidden" custom="Hidden Element" name="hidden">
+    </form>
+    {% endblock %}
+
+</body>
+
+</html>
